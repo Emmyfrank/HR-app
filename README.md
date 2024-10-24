@@ -1,2 +1,2 @@
-# sicApp
-SicApp user details
+# HR-App
+HR-App user details
