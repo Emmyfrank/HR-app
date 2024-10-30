@@ -33,4 +33,22 @@ export const contracts = [
       cashAllowance: 100,
       kingAllowance: 50
     },
+
+    { 
+      id: '3', 
+      referenceNumber: 'CONT003', 
+      employeeName: 'Emmy nono', 
+      payrollAccount: 'PAY001',
+      contractType: 'Part-time', 
+      workingSchedule: '9AM - 5PM',
+      startDate: '2023-01-01',
+      endDate: '2024-01-01',
+      status: 'Active',
+      position: 'Software Engineer',
+      salaryType: 'Monthly',
+      salary: 5000,
+      overtime: 20,
+      cashAllowance: 200,
+      kingAllowance: 100
+    },
   ];

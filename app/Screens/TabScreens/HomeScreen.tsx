@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Platform, FlatList, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import {contracts} from "../../data/contracts"
-import {departments} from "../../data/departments"
-import {employees} from "../../data/employees"
-import {jobPositions} from "../../data/jobPositions"
-import {leaveRequests} from "../../data/leaveRequests"
-import {menuItems} from "../../data/menuItems"
+import { contracts } from "../../data/contracts";
+import { departments } from "../../data/departments";
+import { employees } from "../../data/employees";
+import { jobPositions } from "../../data/jobPositions";
+import { leaveRequests } from "../../data/leaveRequests";
+import { menuItems } from "../../data/menuItems";
+
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
 
-const HomeScreen: React.FC = () => {
+export default function HomeScreen() {
   const router = useRouter();
   const [currentScreen, setCurrentScreen] = useState('Home');
   const [selectedId, setSelectedId] = useState(null);
@@ -24,6 +25,8 @@ const HomeScreen: React.FC = () => {
       key={index} 
       style={styles.menuItem}
       onPress={() => setCurrentScreen(item.label)}
+      accessibilityRole="button"
+      accessibilityLabel={`Navigate to ${item.label}`}
     >
       <Ionicons name={item.icon as any} size={24} color="#0052A4" />
       <Text style={styles.menuItemText}>{item.label}</Text>
@@ -228,7 +231,6 @@ const HomeScreen: React.FC = () => {
         renderItem={({ item }:any) => (
           <TouchableOpacity 
             style={styles.listItem}
-            
             onPress={() => {
               setSelectedId(item.id);
               setCurrentScreen('Contract Details');
@@ -346,6 +348,7 @@ const HomeScreen: React.FC = () => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.listItem}>
+              
               <Text style={styles.listItemTitle}>{item.employeeName}</Text>
               <Text style={styles.listItemSubtitle}>From: {item.startDate} To: {item.endDate}</Text>
               <Text style={styles.listItemSubtitle}>Reason: {item.reason}</Text>
@@ -461,24 +464,29 @@ const HomeScreen: React.FC = () => {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0052A4" />
       <View style={styles.header}>
-        <TouchableOpacity style={styles.menuButton} onPress={() => setCurrentScreen('Home')}>
-          <Ionicons name="menu" size={24} color="white" />
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.headerName}>Emmanuel Nono 👋</Text>
-          <Text style={styles.headerGreeting}>How are you today?</Text>
-        </View>
+        {currentScreen === 'Home' ? (
+          <>
+            <TouchableOpacity style={styles.menuButton} onPress={() => setCurrentScreen('Home')}>
+              <Ionicons name="menu" size={24} color="white" />
+            </TouchableOpacity>
+            <View>
+              <Text style={styles.headerName}>Emmanuel Nono 👋</Text>
+              <Text style={styles.headerGreeting}>How are you today?</Text>
+            </View>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('Home')}>
+              <Ionicons name="arrow-back" size={24} color="white" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle}>{currentScreen}</Text>
+          </>
+        )}
       </View>
-      {currentScreen !== 'Home' && (
-        <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('Home')}>
-          <Ionicons name="arrow-back" size={24} color="#0052A4" />
-          <Text style={styles.backButtonText}>Back to Home</Text>
-        </TouchableOpacity>
-      )}
       {renderScreen()}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -503,6 +511,15 @@ const styles = StyleSheet.create({
   headerGreeting: {
     color: 'white',
     fontSize: 14,
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 16,
+  },
+  backButton: {
+    padding: 8,
   },
   content: {
     flexDirection: 'row',
@@ -584,16 +601,6 @@ const styles = StyleSheet.create({
     flex: 2,
     textAlign: 'right',
   },
-  backButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-  },
-  backButtonText: {
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#0052A4',
-  },
   button: {
     backgroundColor: '#0052A4',
     padding: 12,
@@ -625,5 +632,3 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-
-export default HomeScreen;
